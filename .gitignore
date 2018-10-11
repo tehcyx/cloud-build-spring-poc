@@ -1,0 +1,37 @@
+# Created by .ignore support plugin (hsz.mobi)
+### Java template
+*.class
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+/.idea/
+/.gradle/
+/.vscode/
+/build/
+/docker/solr/mycores/webcore/conf/dataimport.properties
+/docker/dynatrace/paasInstaller_Unix_all.zip
+/bin/
+/out/
+/robot-library/.gradle/
+/robot-library/build/
+
+# eclipse things
+.classpath
+.project
+.settings
+RobotTests/gradlew
+RobotTests/gradlew.bat
+RobotTests/.gradle/3.3/taskArtifacts/fileHashes.bin
+RobotTests/.gradle/3.3/taskArtifacts/fileSnapshots.bin
+RobotTests/.gradle/3.3/taskArtifacts/taskArtifacts.bin
+RobotTests/.gradle/3.3/taskArtifacts/taskArtifacts.lock
+RobotTests/gradle/wrapper/gradle-wrapper.jar
+RobotTests/gradle/wrapper/gradle-wrapper.properties
