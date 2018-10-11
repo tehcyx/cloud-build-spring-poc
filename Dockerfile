@@ -1,11 +1,5 @@
 FROM openjdk:8-jdk-alpine
 
-ARG traceability
-LABEL traceability=$traceability
-
-ARG buildDateLabel
-LABEL buildDateLabel=$buildDateLabel
-
 RUN apk add --update jq bash && rm -rf /var/cache/apk/*
 
 RUN mkdir /app
