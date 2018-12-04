@@ -5,6 +5,8 @@ steps:
 - name: 'gcr.io/cloud-builders/docker'
   args:
   - 'build'
+  - '-f'
+  - 'docker-compose/Dockerfile'
   - '--build-arg'
   - 'version=1.16.1'
   - '-t'
