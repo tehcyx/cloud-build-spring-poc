@@ -6,7 +6,7 @@ steps:
 - name: 'gcr.io/cloud-builders/gradle'
   args: ['check', '--continue']
 - name: 'gcr.io/$PROJECT_ID/docker-compose'
-  args: ['-f', 'cloud-build/integration-test/docker-compose.yaml', 'up', '-d']
+  args: ['-f', 'cloud-build/integration-test/docker-compose.yaml', 'up', '--abort-on-container-exit']
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-t', 'gcr.io/$PROJECT_ID/$REPO_NAME:$COMMIT_SHA', '.']
 images: ['gcr.io/$PROJECT_ID/$REPO_NAME:$COMMIT_SHA']
