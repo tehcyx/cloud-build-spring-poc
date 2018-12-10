@@ -15,3 +15,10 @@ steps:
   - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
   - 'CLOUDSDK_CONTAINER_CLUSTER=your-first-cluster-1'
 images: ['gcr.io/$PROJECT_ID/$REPO_NAME:$COMMIT_SHA']
+tags:
+  - 'cloud-build'
+  - 'spring'
+  - 'dev'
+  - 'build'
+  - 'deploy'
+  - 'build/deploy'
