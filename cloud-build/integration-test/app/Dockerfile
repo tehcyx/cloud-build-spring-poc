@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk-alpine
+FROM gcr.io/cloud-builders/gradle
 
 COPY cloud-build/integration-test/app/entrypoint.sh /entrypoint.sh
 

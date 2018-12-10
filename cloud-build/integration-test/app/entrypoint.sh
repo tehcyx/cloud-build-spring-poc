@@ -1,6 +1,6 @@
 #!/bin/sh -e
 echo "## Starting tests"
-./gradlew integrationTestJenkins
+gradle integrationTestJenkins
 
 echo "## Copying testresult"
 echo "here we can copy test results"
