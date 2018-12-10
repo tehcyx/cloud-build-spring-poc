@@ -5,17 +5,17 @@ steps:
   args: ['test']
   volumes:
     - name: 'test-results'
-      path: 'test-results'
+      path: '/test-results'
 - name: 'gcr.io/cloud-builders/gradle'
   args: ['check', '--continue']
   volumes:
     - name: 'test-results'
-      path: 'test-results'
+      path: '/test-results'
 - name: 'gcr.io/$PROJECT_ID/docker-compose'
   args: ['-f', 'cloud-build/integration-test/docker-compose.yaml', 'up', '--abort-on-container-exit']
   volumes:
     - name: 'test-results'
-      path: 'test-results'
+      path: '/test-results'
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-t', 'gcr.io/$PROJECT_ID/$REPO_NAME:$COMMIT_SHA', '.']
 images: ['gcr.io/$PROJECT_ID/$REPO_NAME:$COMMIT_SHA']
