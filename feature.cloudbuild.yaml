@@ -2,9 +2,11 @@ steps:
 - name: 'java:8'
   env: ['GRADLE_USER_HOME=cache']
   entrypoint: 'bash'
+  args: ['-c', './gradlew downloadDependencies']
+- name: 'java:8'
+  env: ['GRADLE_USER_HOME=cache']
+  entrypoint: 'bash'
   args: ['-c', './gradlew assemble']
-# - name: 'gcr.io/cloud-builders/gradle'
-#   args: ['assemble']
 - name: 'java:8'
   env: ['GRADLE_USER_HOME=cache']
   entrypoint: 'bash'
