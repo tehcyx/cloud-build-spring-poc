@@ -19,4 +19,4 @@ services:
     links:
       - db
     volumes:
-      - ./workspace:/workspace
+      - /workspace:/workspace
