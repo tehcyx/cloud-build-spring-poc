@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://db/web
+    username: web
+    password: secret
+  jpa.properties.hibernate.show_sql: false

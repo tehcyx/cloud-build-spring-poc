@@ -1,13 +1,22 @@
 version: '3.2'
 services:
+  db:
+    build:
+      context: ../..
+      dockerfile: ./cloud-build/integration-test/db/Dockerfile
+      args: 
+        - INFRABOX_BUILD_NUMBER=$INFRABOX_BUILD_NUMBER
+    environment:
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_USER=postgres
+
   app:
     build:
       context: ../..
-      dockerfile: ./Dockerfile
+      dockerfile: ./cloud-build/integration-test/app/Dockerfile
       args: 
         - VAR=test
     environment:
       - ENV_VARIABLE=test
-    # links:
-    #   - db
-    #   - uaa
+    links:
+      - db

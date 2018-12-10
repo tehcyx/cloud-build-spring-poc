@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost/web
+    username: web
+    password: secret
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      #tomcat.connection-properties: useUnicode=true;characterEncoding=utf-8;
+      # https://github.com/brettwooldridge/HikariCP#configuration-knobs-baby
+      auto-commit: false
+      transaction-isolation: TRANSACTION_READ_COMMITTED
+      # the next 2 settings will be overwritten for other environments
+      maximum-pool-size: 10
+      minimum-idle: 2
+  jpa.properties.hibernate.show_sql: false
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        physical_naming_strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+        show_sql: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
