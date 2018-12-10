@@ -20,3 +20,6 @@ services:
       - ENV_VARIABLE=test
     links:
       - db
+
+volumes:
+    - ./workspace:/workspace
