@@ -1,5 +1,6 @@
 #!/bin/sh -e
 echo "## Starting tests"
+cd /workspace/
 ./gradlew integrationTestJenkins
 
 echo "## Copying testresult"
