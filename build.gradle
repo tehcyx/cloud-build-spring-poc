@@ -169,6 +169,10 @@ task integrationTestJenkins(type: Test) {
 
 //START: build speed
 task downloadDependencies(type: Exec) {
+    configurations.compileOnly.files
+    configurations.implementation.files
+    configurations.testImplementation.files
+
     configurations.testRuntime.files
     configurations.testCompile.files
     configurations.compile
