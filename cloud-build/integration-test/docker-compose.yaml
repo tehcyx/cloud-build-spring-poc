@@ -4,8 +4,6 @@ services:
     build:
       context: ../..
       dockerfile: ./cloud-build/integration-test/db/Dockerfile
-      args: 
-        - INFRABOX_BUILD_NUMBER=$INFRABOX_BUILD_NUMBER
     environment:
       - POSTGRES_PASSWORD=secret
       - POSTGRES_USER=postgres
@@ -20,6 +18,5 @@ services:
       - ENV_VARIABLE=test
     links:
       - db
-
-volumes:
-    - ./workspace:/workspace
+    volumes:
+      - ./workspace:/workspace
