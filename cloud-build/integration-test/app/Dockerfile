@@ -1,6 +1,7 @@
-FROM gcr.io/cloud-builders/gradle
+FROM java:8
+
+ENV 'GRADLE_USER_HOME' 'cache'
 
 COPY cloud-build/integration-test/app/entrypoint.sh /entrypoint.sh
-RUN ls -alh
 
 ENTRYPOINT /entrypoint.sh

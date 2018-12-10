@@ -166,3 +166,16 @@ task integrationTestJenkins(type: Test) {
     }
 }
 //END: test
+
+//START: build speed
+task downloadDependencies(type: Exec) {
+    configurations.testRuntime.files
+    configurations.testCompile.files
+    configurations.compile
+    configurations.runtime
+    configurations.pmd
+    configurations.checkstyle
+    configurations.findbugs
+    commandLine 'echo', 'Downloaded all dependencies'
+}
+//END: build speed
