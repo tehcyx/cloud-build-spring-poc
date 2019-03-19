@@ -14,6 +14,10 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'jacoco'
+apply plugin: 'checkstyle'
+apply plugin: 'findbugs'
+apply plugin: 'pmd'
 
 group = 'com.sap.hybris.cloud'
 version = '0.0.1-SNAPSHOT'
@@ -28,8 +32,154 @@ bootJar {
 }
 
 dependencies {
-	implementation('org.springframework.boot:spring-boot-starter')
-	implementation('org.springframework.boot:spring-boot-starter-web')
+	compile('org.springframework.boot:spring-boot-starter')
+	compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('org.postgresql:postgresql:42.2.4')
+
 	compileOnly('org.projectlombok:lombok')
-	testImplementation('org.springframework.boot:spring-boot-starter-test')
+
+	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
+
+
+//START: QA RULES
+
+pmd {
+    toolVersion = "5.8.1"
+}
+
+check.dependsOn 'checkstyle', 'findbugs', 'pmd'
+
+checkstyle {
+    configFile file("${project.rootDir}/qa-rules/checkstyle.xml")
+
+    // updated due to versioneye security issue due to spring boot pulled version is an issue. re-evaluate when updating spring-boot
+    toolVersion = "8.0"
+}
+
+task checkstyle(type: Checkstyle) {
+    ignoreFailures = false
+    checkstyleTest.enabled = false
+    source 'src/main'
+    include '**/*.java'
+    exclude '**/build/**'
+//    maxWarnings 5
+//    maxErrors 0
+    showViolations true
+
+    classpath = files()
+}
+
+findbugsMain {
+    excludeFilter = new File("${project.rootDir}/qa-rules/findbugs.xml")
+}
+
+jacoco {
+    toolVersion = "0.7.9"
+    reportsDir = file("$buildDir/jacoco")
+}
+
+jacocoTestReport {
+    dependsOn 'test'
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination file("${buildDir}/jacocoHtml")
+    }
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 0
+            }
+        }
+
+        rule {
+            enabled = false
+            element = 'CLASS'
+            includes = ['org.gradle.*']
+
+            limit {
+                counter = 'LINE'
+                value = 'TOTALCOUNT'
+                maximum = 0.3
+            }
+        }
+    }
+}
+
+task findbugs(type: FindBugs) {
+    ignoreFailures = false
+    effort = "max"
+    reportLevel = "high"
+    excludeFilter = new File("${project.rootDir}/qa-rules/findbugs.xml")
+    classes = files("${project.buildDir}/classes/")
+
+    // configured below
+    //source 'src/main'
+    //include '**/*.java'
+    exclude '**/build/**'
+
+    reports {
+        xml {
+            destination file("${project.buildDir}/reports/findbugs/findbugs.xml")
+            xml.withMessages true
+        }
+    }
+
+    classpath = files()
+}
+
+findbugs {
+    // only scan main src and skip test src
+    sourceSets = [sourceSets.main]
+}
+
+task pmd(type: Pmd) {
+    ruleSetFiles = files("${project.rootDir}/qa-rules/ruleset.xml")
+    ignoreFailures = false
+    ruleSets = [ "java-basic", "java-braces", "java-strings" ]
+
+    source 'src/main'
+    include '**/*.java'
+    exclude '**/build/**'
+
+    reports {
+        xml.enabled = true
+        html.enabled = false
+    }
+}
+//END: QA RULES
+
+//START: test
+test {
+    useJUnit {
+        includeCategories 'com.sap.hybris.cloud.poc.UnitTest'
+    }
+}
+
+task integrationTestJenkins(type: Test) {
+    systemProperty 'spring.profiles.active', 'jenkins'
+    useJUnit {
+        includeCategories 'com.sap.hybris.cloud.poc.IntegrationTest'
+    }
+}
+//END: test
+
+//START: build speed
+task downloadDependencies(type: Exec) {
+    configurations.compileOnly.files
+
+    configurations.testRuntime.files
+    configurations.testCompile.files
+    configurations.compile
+    configurations.runtime
+    configurations.pmd
+    configurations.checkstyle
+    configurations.findbugs
+    commandLine 'echo', 'Downloaded all dependencies'
+}
+//END: build speed
